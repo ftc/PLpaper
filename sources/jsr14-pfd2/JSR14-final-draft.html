@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>JSR14 final draft</title>
+</head>
+<body>
+<h1>JSR 14 Adding Generics to the Java Programming Language: Final
+Public Draft</h1>
+<br>
+<h3>July 19, 2004</h3>
+<br>
+<br>
+<h2>Introduction</h2>
+JSR-14 specifies necessary modifications to the Java programming
+language, Java virtual machine and Java APIs to support generic types
+(aka parametric polymorphism).<br>
+<br>
+For an informal overview of the generics extension from the
+programmer's perspective, see this <a
+ href="http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf">tutorial</a>.<br>
+<br>
+Previous specifications of JSR-14 have given draft stand-alone
+specifications that detail changes to the pre-existing language, VM and
+APIs. This document provides actual modifications to the Java Language
+Specification (JLS), Java Virtual Machine Specification (JVMS) and
+platform APIs. <br>
+<br>
+The next three sections provide these specification changes. The final
+section is a design overview and rationale. The changes to the
+specification of the Java programming language are
+pervasive, and are in many cases intertwined with changes due to other
+language features<br>
+<br>
+<h2>Changes to the JLS</h2>
+<br>
+The rules for these features are given in the <a href="../jls3.zip">Java
+Language
+Specification, 3rd edition draft</a>.<br>
+The changes to the specification of the Java programming language are
+pervasive, and are in many cases intertwined with changes due to other
+language features.&nbsp; Therefore, it is neither practical nor useful
+to exhaustively enumerate those sections that have been modified due to
+generics. Key changes and definitions are to be found in chapters 4, 5,
+8, 9 and 15; important changes occur in chapters 6, 10, 11 and 13 as
+well, but almost every chapter will show some effect of JSR14.&nbsp;
+Therefore, chapters 1-15 of the specification are
+provided here.&nbsp; Modifications are marked by change bars. The
+attached JLS text may change; examples will be added, and and
+formatting changes will be extensive, but the normative semantics
+governing
+generics will remain the same. <br>
+<br>
+<br>
+<h2>Changes to the JVMS</h2>
+<br>
+<br>
+Changes to the JVMS are given in <a
+ href="http://java.sun.com/docs/books/vmspec/2nd-edition/ClassFileFormat-final-draft.pdf">http://java.sun.com/docs/books/vmspec/2nd-edition/ClassFileFormat-final-draft.pdf</a><br>
+The changes relevant to JSR14 are highlighted in blue. All changes are
+marked by change bars.<br>
+<br>
+The changes involve the definition of <span style="font-style: italic;">signatures</span>
+in the class file,&nbsp; which provide generic type information
+regarding generic classes,&nbsp; interfaces, methods, fields and
+constructors. This information is used by compilers during separate
+compilation, and by virtual machines to support structural program
+reflection as discussed in the following section. It may of course be
+used by other tools such as debuggers, IDEs etc. as necessary.<br>
+<br>
+No other changes to the Java virtual machine specification. are
+required by this JSR. However, implementation of the API changes (see
+below) may require some simple VM level support.<br>
+<br>
+<h2>API Changes</h2>
+Generics enable an extensive set of changes to the APIs of the Java
+platform.&nbsp; Most of these can be found at<br>
+<a href="http://java.sun.com/j2se/1.5.0/docs/api/index.html">http://java.sun.com/j2se/1.5.0/docs/api/index.html</a>.
+<br>
+<br>
+<br>
+Most notable are changes to the Collection hierarchy in package
+java.util, and changes to java.lang.Class, and the package
+java.lang.reflect.<br>
+<br>
+The changes in java.lang.Class and java.lang.reflect serve two main
+purposes:<br>
+<br>
+<ul>
+  <li>&nbsp;They support structural program reflection on generic type
+information. In other words, they make it possible to examine a type,
+method, constructor or field declaration and obtain generic type
+information. Specifically, one can determine whether a type, method or
+constructor declares any type variables, and reflect&nbsp; those type
+variables to the application program (so that one may learn their names
+and bounds, for example). One can also obtain the non-erased form of
+the type of a field,&nbsp; a method or constructor parameter, a method
+return type or the throws clause of a method or constructor.</li>
+  <li>The use of instances of java.lang.Class as type tokens.&nbsp; See
+section 8 of the aforementioned <a
+ href="http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf">tutorial</a>
+for examples. <br>
+  </li>
+</ul>
+In addition, the following changes, not included in the beta release
+are required:<br>
+<br>
+<br>
+<br>
+<tt>/*<br>
+&nbsp;* Returns the immediately enclosing class of the underlying class.<br>
+&nbsp;* If the underlying class is a top level class<br>
+&nbsp;* this method returns &lt;TT&gt;null&lt;/tt&gt;.<br>
+&nbsp;* @return the immediately enclosing class of the underlying class<br>
+&nbsp;* @since 1.5<br>
+&nbsp;*/<br>
+public java.lang.Class getEnclosingClass()<br>
+&nbsp;<br>
+/*<br>
+&nbsp;* Returns the simple name of the<br>
+&nbsp;* the underlying class as given in the source code. Returns an<br>
+&nbsp;* empty string if the underlying class is an anonymous class.<br>
+&nbsp;* @return the simple name of the underlying class<br>
+&nbsp;* @since 1.5<br>
+&nbsp;*/<br>
+public String getSimpleName()<br>
+&nbsp;<br>
+&nbsp;<br>
+/*<br>
+&nbsp;* Returns the canonical name of the<br>
+&nbsp;* the underlying class as defined by the Java Language
+Specification.<br>
+&nbsp;* Returns null if the underlying class does not have a canonical
+name<br>
+&nbsp;* (i.e., if it is a local or anonymous class or an array whose<br>
+&nbsp;* component type does not have a canonical name).<br>
+&nbsp;* @return the canonical name of the underlying class if it
+exists, and<br>
+&nbsp;* &lt;tt&gt;null&lt;/tt&gt; otherwise.<br>
+&nbsp;* @since 1.5<br>
+&nbsp;*/<br>
+public String getCanonicalName()<br>
+&nbsp;<br>
+/**<br>
+&nbsp;* Returns &lt;tt&gt;true&lt;/tt&gt; if and only if the underlying
+class<br>
+&nbsp;* is an anonymous class.<br>
+&nbsp;*<br>
+&nbsp;* @return true if and only if this class is an anonymous class.<br>
+&nbsp;* @since 1.5<br>
+&nbsp;*/<br>
+public boolean isAnonymousClass()<br>
+&nbsp;<br>
+/**<br>
+&nbsp;* Returns &lt;tt&gt;true&lt;/tt&gt; if and only if the underlying
+class<br>
+&nbsp;* is a local class.<br>
+&nbsp;*<br>
+&nbsp;* @return true if and only if this class is a local class.<br>
+&nbsp;* @since 1.5<br>
+&nbsp;*/<br>
+public boolean isLocalClass()<br>
+&nbsp;<br>
+/**<br>
+&nbsp;* Returns &lt;tt&gt;true&lt;/tt&gt; if and only if the underlying
+class<br>
+&nbsp;* is a member class.<br>
+&nbsp;*<br>
+&nbsp;* @return true if and only if this class is a member class.<br>
+&nbsp;* @since 1.5<br>
+&nbsp;*/<br>
+public boolean isMemberClass()</tt><br>
+<br>
+<br>
+<h4>Motivation</h4>
+<br>
+In order to reliably obtain information about type variables in scope,
+the method Class.getEnclosingMethod() was introduced.&nbsp; However, in
+certain cases, the enclosing method of a local or anonymous class is
+ill-defined (i.e., when the local/anonymous class appears in an
+instance initializer or instance variable initializer).<br>
+&nbsp;<br>
+In such cases, the enclosing class must be used to obtain this
+information. This requires the introduction of a new method,
+getEnclosingClass(), to surface this reliably (getDeclaringClass() only
+works for member classes). <br>
+&nbsp;<br>
+Given the ability to get reasonable data about local and anonymous
+classes through getEnclosingClass() and getEnclosingMethod(),&nbsp; we
+need
+to address longstanding deficiencies in the reflection API so that such
+classes can be manipulated conveniently and reliably through reflection.<br>
+&nbsp;<br>
+This includes identifying whether a class is anonymous, local or member,<br>
+and reliably obtaining its canonical and simple names.<br>
+<span style="font-family: monospace;"></span><br>
+<h2><br>
+</h2>
+<h2>Design Overview and Rationale</h2>
+<h3>History </h3>
+JSR14&nbsp;
+evolved from the <a
+ href="http://www.cs.bell-labs.com/who/wadler/pizza/gj/">GJ
+project</a>, which in turn evolved from Pizza.&nbsp; Over time,&nbsp;
+JSR14 has added support for reflection, for using Class objects as type
+tokens and for wildcards.
+<p>Most proposals for adding generics to the Java programming language
+have a great deal in common. The main points where they differ are:<br>
+</p>
+<ol>
+  <li>&nbsp;The degree of support for generic types
+at run time.</li>
+  <li>&nbsp;The
+treatment of primitive types.</li>
+  <li>&nbsp;The support for advanced features such as
+wildcards/variance.<br>
+  </li>
+</ol>
+<p>&nbsp;These are discussed in some detail below.
+</p>
+<p><b>This proposal is carefully designed so as not to preclude further
+evolution</b>.&nbsp; In particular, in the two main areas of
+controversy ((1) and (2) above),
+the additional functionality desired by critics of this proposal could
+be added in the future if circumstances permit.&nbsp;&nbsp;</p>
+<p><br>
+<a name="gj-differerences"></a></p>
+<h3>Differences compared to the Public draft</h3>
+<br>
+<ol>
+  <li>The final draft disallows the creation of arrays of non-reifiable
+type,
+while
+allowing array types to be specified without restriction. This
+preserves the key property that, in the absence of unchecked warnings,
+no implicit cast will ever fail at run time.</li>
+  <li>The final draft supports the use of Class objects as type tokens.</li>
+  <li>The final draft supports wildcards, an advanced feature that
+increases the expressiveness and flexibility of the type system.</li>
+  <li>The final draft allows type parameters to be passed explicitly to
+generic methods or constructors, if desired. However, in the vast
+majority of cases, this is not necessary, due to type inference.<br>
+  </li>
+</ol>
+<h3><br>
+</h3>
+<br>
+<h3>
+Treatment of Primitive Types</h3>
+The <a
+ href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_014_gener.html">original
+JSR</a> indicated that supporting primitive type parameters to generics
+was not a goal of the project.&nbsp; With the inclusion of autoboxing
+and unboxing as part of JSR201,&nbsp; direct support for<br>
+genericity over primitive types is primarily a performance
+optimization. Such optimizations, while challenging, amy be possible at
+the discretion of future implementations.&nbsp;
+<h3>Treatment of Generic Types at Run-time</h3>
+<p><br>
+Supporting generic types at run time is not possible at this time due
+to considerations of compatibility.<br>
+In addition, the footprint implications of such support on small
+platforms remain unclear.&nbsp;</p>
+<p>The negative effects on small VMs which cannot
+afford
+the space penalties could&nbsp; not be ignored.&nbsp;
+The space required for representing generic type information at run
+time
+is a problem for small VMs.
+</p>
+<p>If generic types are represented in the class file format, one
+expects&nbsp; the byte code verifier must be able to deal
+with
+generic types. Thus the polymorphic type system becomes part of the
+trusted
+code base for Java platform security. This is&nbsp; very undesirable
+because
+of the complexity involved and because we wish to decrease rather than
+increase&nbsp;
+the size of the trusted code base.<br>
+</p>
+<p>The dominant consideration however, is the need
+for&nbsp;
+different software libraries to evolve independently while still
+interoperating.&nbsp;
+Reification of generics makes it impossible to compatibly migrate an
+existing library to use generics, since old clients cannot use the
+generified library; it is unsound for them to do so. And while this
+unsoundness is supported at compile-time in the current proposal,
+rendering the run time type system unsound is unacceptable and
+completely nullifies the benefits of reification).</p>
+<p>This in turn forces the introduction of new libraries.&nbsp; In
+particular, the collection libraries would have to be recreated in a
+generic version, that would not be interoperable with the pre-existing
+version. Assume two modules communicate using collections. If the
+generic
+collections
+were incompatible with the non-generic ones, then both modules would
+have
+to either keep using the old version, or switch to the new one
+simultaneously.&nbsp;
+This is unrealistic if the two modules are developed by independent
+entities.
+</p>
+<br>
+<h2>Additional Resources</h2>
+The&nbsp; <a
+ href="http://homepages.inf.ed.ac.uk/wadler/gj/Documents/#gj-oopsla">OOPSLA
+98 GJ paper</a>, which gives a rigorous discussion of the GJ design.
+This
+paper is still highly relevant to the proposed extension.
+<br>
+<br>
+<a
+ href="http://www.sato.kuis.kyoto-u.ac.jp/%7Eigarashi/papers/variance.html">The
+paper on usage based variance by Atsushi Igarashi and Mirko Viroli</a>.&nbsp;
+The key precursor for wildcards.<br>
+<br>
+A brief paper on wildcards:<br>
+<br>
+<span style="font-style: italic;"><a
+ href="http://www.daimi.au.dk/%7Emadst/">Mads Torgersen</a>, <a
+ href="http://www.daimi.au.dk/%7Eplesner/">Christian
+Plesner Hansen</a>, <a href="http://www.daimi.au.dk/%7Eeernst/">Erik
+Ernst</a>,
+<a href="http://www.ahe.dk/peter/">Peter von der Ahe</a>, <a
+ href="http://bracha.org">Gilad Bracha</a> and <a
+ href="http://www.gafter.com/%7Eneal/">Neal Gafter</a>.</span> <a
+ href="http://bracha.org/wildcards.pdf">Adding Wildcards to the Java
+Programming Language</a>.
+Proceedings of <a href="http://www.acm.org/conferences/sac/sac2004/">SAC
+2004</a>.<br>
+<br>
+<br>
+<a href="http://blogs.sun.com/roller/page/ahe">Peter von der Ahe's
+weblog</a><br>
+<br>
+<br>
+<br>
+&nbsp;
+<br>
+&nbsp;
+</body>
+</html>
