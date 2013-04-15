@@ -21,8 +21,13 @@ Our paper will be divided into three sections of about 500 words each. Initial r
 ### Section 1 - Sean
 This section will discuss the history of generic types in Java as seen in the Pizza programming language. 
 
+It may also be helpful to look at [GJ][1], a Generic Java Language Extension that JSR 14 evolved from. 
+
 ### Section 2 - Dylan
 This section will discuss the proposed impact of JSR 14 as seen by those who initiated the proposal. 
 
 ### Section 3 - Ryan
 This section will discuss how generic types in Java are actually used today. 
+
+
+[1]: http://lampwww.epfl.ch/gj/
