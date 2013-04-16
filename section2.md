@@ -43,9 +43,7 @@ Parameterized types can optionally have bounded type parameters that limit the p
 
 ### Subtypes, Supertypes, Member Types
 
-Contravariance: conversion from general to specific type
-Covariance: conversion from specific to more general type
-Invariance: can't convert between two types
+The hierarchical relationships between generic types present an opportunity to apply the lessons of covariance and contravariance learned in lecture. Covariance and contravariance describe how types in a language's type system are ordered from widest to narrowest. A type conversion is **covariant** if it converts from a specialized to a more general type (Dog -> Animal). A type conversion is **contravariant** if it converts from a general type to a specialized type (Animal -> Dog). Two types are **invariant** if they cannot be converted to one another (Dog -> Airplane). 
 
 
 
