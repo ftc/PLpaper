@@ -1,0 +1,315 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Gilad Bracha">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (X11; U; SunOS 5.8 sun4u) [Netscape]">
+   <title>jsr-14-participant-draft</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+
+<h1>
+JSR-14 Public Draft</h1>
+
+<h2>
+Summary</h2>
+This page and the referenced documents describe the proposed extension
+of the Java Programming Language with generic type declarations and methods
+(<a href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_014_gener.html">JSR-14</a>).
+<b>The
+proposed extension has absolutely no effect on&nbsp; the Java Virtual Machine
+specification</b>. Rather, the extension affects the Java programming language
+and certain key libraries (collections in particular).
+<p>Below you will find links to a detailed specification of the proposed
+changes. For the benefit of those with a deeper technical interest in genericity,
+the <a href="#background">background section</a> discusses design alternatives
+that were considered by the expert group.
+<h2>
+Language Changes</h2>
+All proposed language changes, including mechanisms for compiling them,
+are described in the&nbsp;<a href="spec8.pdf"> specification of&nbsp; proposed
+language modifiations</a>.
+<b>The changes are absolutely upward compatible
+with the existing Java programming language described in the Java Language
+Specification, Second Edition. All existing binaries and source files remain
+valid.</b>
+<h2>
+Library Changes</h2>
+
+<h3>
+Collections</h3>
+Generic type information will be added to the Collections library. <b>This
+does not have any effect whatsoever on users of the collection library.
+The semantics of the collection classes remain unchanged. As noted above,
+all existing binaries and source files remain valid</b>. <a href="collections-javadoc/index.html">Here
+are the affected APIs</a>.
+<h3>
+Reflection</h3>
+Limited support for structural reflection on generics is included in this
+draft. The relevant extensions are
+<br>given <a href="reflection-javadoc/index.html">here</a>.
+<h2>
+<a NAME="background"></a>Background and Rationale</h2>
+
+<p><br>The current proposal evolved from the <a href="http://www.cs.bell-labs.com/who/wadler/pizza/gj/">GJ
+project</a>. The current draft is upward compatible with the GJ specification
+(with one <a href="#caveat">very minor caveat</a>). The differences compared
+to the original GJ proposal are detailed <a href="#gj-differerences">below</a>.
+<p>Most proposals for adding generics to the Java programming language
+have a great deal in common. The main points where they differ are in the
+treatment of primitive types and in the degree of support for generic types
+at run time.
+<br>Consequently, those two areas have engendered the most controversy.
+These are discussed in some detail below.
+<p><b>This proposal is carefully designed so as not to preclude further
+evolution</b>.&nbsp; In particular, in the two main areas of controversy,
+the additional functionality desired by critics of this proposal could
+be added in the future if warranted.
+<br>&nbsp;
+<h3>
+<a NAME="gj-differerences"></a>Differences compared to GJ</h3>
+The draft allows the use of type variables in throws clauses. This supports
+an important style of programming where inner classes are used almost like
+closures. The draft contains a realistic example that illustrates this
+style.
+<p><a NAME="caveat"></a>The draft disallows generic exception classes (that
+is, subclasses of <tt>Throwable</tt> that are generic). This is the only
+incompatibility with GJ. The usefulness of such exception classes would
+be very limited in any case, because the exception catching mechanism in
+the VM does not support genericity.
+<p>The draft allows for the bounds of type variables to contain both a
+single class and multiple interfaces. This feature had been omitted from
+GJ for simplicity's sake. User feedback has indicated that in some cases
+this functionality is valuable, and so it has been added.
+<p>The draft provides limited support for reflection on generic constructs.
+The specification allows reflective examination of the generic elements
+of program structure, such as the declarations of type variables and the
+use of parametric types in arguments, return types and declared types of
+fields. It does not support any uses that require a run-time association
+between generic type information and individual objects.
+<h3>
+Differences compared to the Community/Participant draft</h3>
+We have added support for reflection to the existing proposal. These require
+minor adjustments to the Java virtual machine.&nbsp; Originally, we were
+very keen to avoid any VM changes because of the burden this might place
+on the industry as a whole. However, circumstances have changed over time.
+It has become apparent that the extensions proposed here will not be productized
+until the 1.5 release of the Java platform, rather than the 1.4 release
+as we had originally anticipated. Realistically, we expect some VM adjustments
+to be done in that time frame in any case, so the penalty for adding reflection
+support is no longer as onerous. Given this change of circumstances and
+the real need and demand for reflection support, we took the opportunity
+to add limited reflective support for generics during the public review
+period.
+<h3>
+Treatment of Primitive Types</h3>
+The <a href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_014_gener.html">original
+JSR</a> indicated that supporting primitive type parameters to generics
+was not a goal of the project. This was based both on philosophical considerations
+and on technical problems.
+<p>The philosophical argument is simply that the existing language clearly
+distinguishes between primitive types and reference types. There is no
+context where one can write code that works for both primitive types and
+reference types. Allowing generics that work for both reference types and
+primitive types requires such a context to be established. This a significant
+change that runs counter to the existing structure of the Java programming
+language.
+<p>A philosophical counter argument makes a comparison with arrays. Arrays
+are a "generic" type, and arrays of primitive type are supported. However,
+arrays are built-in; no user-defined code is involved and so the problem
+noted above does not arise. In the case of arrays, the amount of code that
+needs to be replicated for the different primitive types is small and the
+actual code is known in advance to the VM implementation. The engineering
+trade-offs are therefore very different.
+<p>Even if one chooses the ignore the conceptual issues raised above, significant
+engineering problems arise. Support for primitive types as generic type
+arguments interacts with the overall translation scheme from the new language
+to the existing virtual machine language, as discussed below.
+<br>&nbsp;
+<h4>
+Choice of Translation Scheme</h4>
+A homogeneous translation similar to the existing proposal can be extended
+to support primitive types. However, such an approach does not address
+one of the primary arguments made for abstracting over primitive types,
+which is to increase the performance of numerical codes. Rather, it creates
+a situation where users may be radically misled as to the performance characteristics
+of a generic class. Given the conceptual problems associated with supporting
+primitive types in generics, a solution that does not provide the "expected"
+performance benefits seems unattractive.
+<p>A variation that circumvents some of the conceptual difficulties is
+to uniformly declare that primitive types are in fact subtypes of their
+corresponding reference types. For example, <tt>int</tt> would be a subtype
+of <tt>Integer</tt> and so on. The "boxing conversion" would be done automatically.
+A more limited form of such a conversion is under consideration in the
+context of <a href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_065_cncsarray.html">JSR-65,
+Concise Object Array Literals</a>. Introducing this conversion uniformly
+throughout the Java programming language is a fairly significant change
+to the language, and is arguably beyond the charter of the expert group.
+A separate JSR that dealt with this "autoboxing" issue is highly promising
+avenue for further work.
+<p>Heterogeneous translations make it possible to create distinct code
+when a generic is instantiated on a distinct primitive type. The resulting
+code is easy to optimize for speed. Unfortunately, using a heterogeneous
+translation in general leads to unacceptable increase in footprint.&nbsp;
+This has proven to be problematic in the C++ world, where templates are
+usually implemented via a macro expansion somewhat like heterogeneous translation.
+Load time expansion, as proposed by Agesen et al., addresses some of the
+distribution and disk space concerns, but not the memory footprint problems.
+It also requires VM support. The problem is much more acute for the Java
+programming language, which must be implementable on small footprint devices
+such as PDAs, mobile phones and so forth.
+<p>Heterogeneous translation also raises semantic questions. A heterogeneous
+translation creates multiple classes for the same generic definition. This
+is incompatible with existing semantics. For example, it would not be possible
+to make the existing collection classes generic if distinct generic instantiations
+of these classes had distinct identity, since existing programs rely on
+that identity. While some would argue that only new code should be made
+generic, this argument is unrealistic. Shipping multiple collection libraries
+is unacceptable for several reasons. One is the need to avoid bloating
+of distributions with multiple versions of essentially equivalent code.
+<p>Another, much&nbsp; more crucial consideration, is the need for&nbsp;
+different software libraries to evolve independently while still interoperating.&nbsp;
+Assume two modules communicate using collections. If the generic collections
+were incompatible with the non-generic ones, then both modules would have
+to either keep using the old version, or switch to the new one simultaneously.&nbsp;
+This is unrealistic if the two modules are developed by independent entities.
+<p>Of course, the above considerations are not restricted to collections.
+Many vendors&nbsp; would like to be able to make their existing APIs generic
+without any compatibility concerns. It would be inconceivable to produce
+new versions of all these APIs and deal with the resulting confusion and
+distribution problems.
+<p>Of course, the class identity issue also makes the heterogeneous solution
+incompatible with the homogeneous one. This is one reason why&nbsp; we
+could not view the translations as an implementation issue, and allow for
+distinct implementations to choose different translations (so that PDAs
+used a homogeneous approach, while large scientific projects used a heterogeneous
+approach).
+<br>&nbsp;
+<h3>
+Treatment of Generic Types at Run-time</h3>
+
+<p><br>Supporting generic types at run time seems undesirable for the following
+reasons:
+<br>&nbsp;
+<ul>
+<li>
+Lack of experience with such constructs in widely used languages</li>
+
+<li>
+Burden of extensive VM changes on vendors throughout the industry</li>
+
+<li>
+Increased footprint on small devices</li>
+
+<li>
+Decreased performance for generic methods</li>
+
+<li>
+Compatibility</li>
+</ul>
+
+<p><br>Run time support for genericity has not been implemented in any
+major programming language, and research efforts are also extremely few.
+Consequently, the body of experience with such constructs is very limited.
+It is therefore&nbsp; inappropriate to deploy such constructs in a widely
+used, mission critical language. The risks are too great.
+<p>Beyond the general principle of relying on well understood technology,
+the following discussion should make it clear just how big a technological
+risk is involved.
+<p>Supporting generic types at run time implies that such information is
+passed around at run time. This effects the linkage of constructors for
+generic type declarations and of generic&nbsp; methods. If existing binaries
+are allowed to link to generic ones, <b>as they must</b>, special logic
+must exist as part of the VM resolution process to allow the non-generic
+call to link with the generic declaration. This implies VM support. It
+also implies that the class file format reflect the generic information.
+<p>In addition, the cost of maintaining and transmitting generic type information
+at run time translates to potentially significant performance degradations
+when generic methods or constructors are used. Highly tuned implementations
+may be able to optimize the cost of generic constructors. However, there
+are no known techniques that effectively eliminate the overhead for generic
+methods. In addition, the negative effects on small VMs which cannot afford
+the space penalties of such optimizations should not be ignored.&nbsp;
+The space required for representing generic type information at run time
+is also a problem for small VMs.
+<p>A legitimate trade-off might be to forego generic methods and support
+run-time type information. This is the choice made in PolyJ, for example.
+However, this would not address any of the other issues raised here. Furthermore,
+generic methods are extremely valuable in APIs such as the collections
+library.
+<p>If generic types are represented in the class file format, one might
+reasonably expect&nbsp; the byte code verifier must be able to deal with
+generic types. Thus the polymorphic type system becomes part of the trusted
+code base for Java platform security. This is&nbsp; very undesirable because
+of the complexity involved and because we wish decrease rather than increase&nbsp;
+the size of the trusted code base.
+<p>All this increased complexity must be supported by all Java virtual
+machines. This would makes the Java platform much less suited for small
+embedded applications, and poses a huge burden on VM vendors.
+<p>Overall, it is clear that a compatible extension would require VM modifications.
+Furthermore, the performance implications are uncertain, and are especially
+worrisome for small VMs. It is possible that future research will address
+these issues and conclusively show how to produce fast, compact and compatible
+implementations that support generic types at run-time. However, it would
+be irresponsible to mandate such an extension at this time.
+<h3>
+Design Trade-offs Considered</h3>
+A variety of design trade-offs were considered at different times. One
+is worth mentioning here, because it was a close call, and because further
+user comment on it is particularly valuable.
+<h4>
+Type Aliases</h4>
+We considered the possibility of type aliases, such as
+<p><tt>interface CCT = Collection&lt;Collection&lt;Thread>></tt>
+<p>This was rejected because:
+<ul>
+<li>
+It has the potential to interact poorly with the existing import mechanism</li>
+
+<li>
+It has the potential for abuse</li>
+
+<li>
+It seemed at the outer limits of the expert group's charter</li>
+</ul>
+
+<h2>
+Implementation Status</h2>
+The proposed language and library changes (except reflection) have been
+completely implemented in a production quality compiler. In fact, the current
+shipping version of javac in the J2SE 1.3 SDK is automatically derived
+from a compiler that accepts the extended language.
+<p>A significant user community has been programming with the language
+and APIs described in this proposal for approximately three years, and
+with a similar system (Pizza) for two years prior to that.
+<p>We anticipate releasing our experimental implementation in the very
+near future (see below).
+<br>&nbsp;
+<h2>
+Additional Resources</h2>
+
+<p><br>A experimental implementation should be publicly available in the&nbsp;
+very near future. Please check
+<br><a href="http://java.sun.com/people/gbracha/generics-update.html">the
+generics update page</a> for details.<a href="file://gilad/network-shared/jsr-14-public-draft/generics-slides.htm"></a>
+<p>The <a href="http://www.cs.bell-labs.com/who/wadler/pizza/gj/">GJ web
+site</a> contains a <a href="http://www.cs.bell-labs.com/who/wadler/pizza/gj/Documents/index.html#gj-tutorial">GJ
+tutorial</a> that is also a good introduction to the kind of features described
+by this extension. You can expect a detailed tutorial in the tradition
+of the Java Tutorials in the future.
+<br>The GJ&nbsp; site also contains the <a href="http://www.cs.bell-labs.com/who/wadler/pizza/gj/Documents/index.html#gj-oopsla">OOPSLA
+98 GJ paper</a>, which gives a rigorous discussion of the GJ design. This
+paper is still highly relevant to the proposed extension.
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><font size=-2>Copyright &copy; 1995-2001 <a href="http://www.sun.com">Sun
+Microsystems, Inc.</a></font>
+<br><font size=-2>All Rights Reserved. <a href="http://www.sun.com/share/text/termsofuse.html">Terms
+of Use</a>. <a href="http://www.sun.com/privacy">Privacy Policy</a>.</font>
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>
