@@ -38,7 +38,7 @@ for the generic class or framework.
       Iterator<E> iterator();
     }
 
-  All the types are required at least one parameter.  raw typess more of a 'pre-generic'
+  All the types are required at least one parameter.  raw typess are more of a 'pre-generic'
   style.  generic and raw types can be weaved into the same code, but it can cause confusion.
   
     public class Box<T> {
@@ -49,7 +49,7 @@ for the generic class or framework.
     Box rawBox = new Box();
     
 This new Box can be assigned to a parameterized type in order to link togeter the previous style with generic typing,
-however reversing this will throw a warning.
+however reversing this, assigning a parameterized type to a raw, will throw a warning.
 
 ##Conclusion
 
