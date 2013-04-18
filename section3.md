@@ -27,7 +27,7 @@ the bug is more easily caught allowing for a better debugging process overall.
 
 ##Implementing Generic Types
 
-So since jsr-14 has been accepted and integrated into Java, there is already a library of types with their own classes
+So since jsr-14 has been accepted and integrated into Java, there is a library of types with their own classes
 already implemented.  For example there is already the interface List with it's classes add, get, size, ect...  Although
 this is available, one great part about generics is that you can implement your own classes.  All generic types are
 required to have one or more type parameters, although raw types are possible where there isn't an assigned type argument
