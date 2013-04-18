@@ -20,7 +20,7 @@ types.  This caused an unneccessary amount of code when getting these values.
     printCollection(list);
     }
     
-This code snippet would throw an error if you tried compiling this.  Due to the contravariance, you are unable to add
+This code snippet would throw an error if you tried compiling this.  Due to the invariance, you are unable to add
 a type Integer to the type String list.  This is another example of a parameterized type, where it's subtypes are bounded
 types based strictly off of the former parameter.  Because this error is produced during compile time in place of run time,
 the bug is more easily caught allowing for a better debugging process overall.
