@@ -1,6 +1,6 @@
 # Lightning Talk
 
-## Slide 1
+## Introduction
 
 ## Slide 2
 
@@ -38,4 +38,4 @@
 
 ## Slide 19
 
-## Slide 20
+## Conclusion
