@@ -2,7 +2,7 @@
 
 ## Introduction
 
-## Slide 2
+## Slide 2 - Sean Start
 
 ## Slide 3
 
@@ -14,19 +14,81 @@
 
 ## Slide 7
 
-## Slide 8
+## Parameterized Types and Type Variables - Dylan Start
 
-## Slide 9
+The main feature of JSR 14 is the addition of two new types, parameterized types and type variables. 
 
-## Slide 10
+* Parameterized Types - Class followed by parameter section <T<sub>1</sub>, … , T<sub>n</sub>> 
+* Type Variables - Act as placeholders for types passed by programmer
 
-## Slide 11
+## Generic Class Example 
 
-## Slide 12
+	public class Example<K, V> {
+	
+		private K key;		// declare variable key of type K
+		private V value; 	// declare variable value of type V
+	
+		public Example(K key, V value) {	// constructor
+			this.key = key;
+			this.value = value;
+		}
+	}
 
-## Slide 13
+## Partial Grammar Tree
 
-## Slide 14
+	ReferenceType      		::= ClassOrInterfaceType
+                     		| ArrayType
+                     		| TypeVariable
+
+	TypeVariable			::= Identifier
+
+	ClassOrInterfaceType	::= ClassOrInterface TypeArgumentsOpt
+
+	ClassOrInterface 		::= Identifier
+							| ClassOrInterfaceType . Identifier
+						
+	TypeArguments			::= < ReferenceTypeList>
+
+	ReferenceTypeList		::= ReferenceType
+							| ReferenceTypeList , ReferenceType
+
+## Bounded Type Parameters
+
+Used to limit the possible types passed as type arguments. This is useful if, say, you write a function that only makes sense when operating on numbers. 
+
+To declare a bounded type parameter you list the parameter's name followed by the *extends* keyword, followed by the upper bound.
+
+## Bounded Type Example
+
+This example defines a method inspect() that prints the type of class variable t and function parameter u. The parameter u only accepts Numbers or subtypes of Number. Calling it on a String type throws an error.
+
+	public class Box<T> {
+
+	    private T t;          
+	
+	    public void set(T t) {
+	    	this.t = t;
+	    }
+	    
+	    public T get() {
+	    	return t;
+	    }
+	    	
+	    public <U extends Number> void inspect(U u){
+	        System.out.println("T: " + t.getClass().getName());
+	        System.out.println("U: " + u.getClass().getName());
+	    }
+	
+	    public static void main(String[] args) {
+	        Box<Integer> integerBox = new Box<Integer>();
+	        integerBox.set(new Integer(10));
+	        integerBox.inspect("some text"); // error: this is still String!
+	    }
+	}
+	
+## Covariance and Contravariance
+
+## Slide 14 - Ryan Start
 
 ## Slide 15
 
