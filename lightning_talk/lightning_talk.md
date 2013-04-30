@@ -85,6 +85,10 @@ This example defines a method inspect() that prints the type of class variable t
 	        integerBox.inspect("some text"); // error: this is still String!
 	    }
 	}
+
+Code snippet borrowed from [tutorialspoint.com][1]. 
+
+[1]: http://www.tutorialspoint.com/java/java_generics.htm
 	
 ## Covariance and Contravariance
 
