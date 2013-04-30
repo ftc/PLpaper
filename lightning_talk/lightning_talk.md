@@ -42,16 +42,8 @@ getMax(int a, int b)
     400598:       48 89 e5                mov    %rsp,%rbp
     40059b:       89 7d fc                mov    %edi,-0x4(%rbp)
     40059e:       89 75 f8                mov    %esi,-0x8(%rbp)
-    4005a1:       8b 45 fc                mov    -0x4(%rbp),%eax
-    4005a4:       3b 45 f8                cmp    -0x8(%rbp),%eax
-    4005a7:       7e 05                   jle    4005ae <_Z6getMaxIiET_S0_S0_+0x17>
-    4005a9:       8b 45 fc                mov    -0x4(%rbp),%eax
-    4005ac:       eb 03                   jmp    4005b1 <_Z6getMaxIiET_S0_S0_+0x1a>
-    4005ae:       8b 45 f8                mov    -0x8(%rbp),%eax
-    4005b1:       5d                      pop    %rbp
-    4005b2:       c3                      retq 
+    ...
 
-## Slide 6
 getMax(float a, float b)
 
     00000000004005b3 <_Z6getMaxIdET_S0_S0_>:
@@ -59,22 +51,10 @@ getMax(float a, float b)
     4005b4:       48 89 e5                mov    %rsp,%rbp
     4005b7:       f2 0f 11 45 f8          movsd  %xmm0,-0x8(%rbp)
     4005bc:       f2 0f 11 4d f0          movsd  %xmm1,-0x10(%rbp)
-    4005c1:       f2 0f 10 45 f8          movsd  -0x8(%rbp),%xmm0
-    4005c6:       66 0f 2e 45 f0          ucomisd -0x10(%rbp),%xmm0
-    4005cb:       76 06                   jbe    4005d3 <_Z6getMaxIdET_S0_S0_+0x20>
-    4005cd:       48 8b 45 f8             mov    -0x8(%rbp),%rax
-    4005d1:       eb 04                   jmp    4005d7 <_Z6getMaxIdET_S0_S0_+0x24>
-    4005d3:       48 8b 45 f0             mov    -0x10(%rbp),%rax
-    4005d7:       48 89 45 e8             mov    %rax,-0x18(%rbp)
-    4005db:       f2 0f 10 45 e8          movsd  -0x18(%rbp),%xmm0
-    4005e0:       5d                      pop    %rbp
-    4005e1:       c3                      retq   
-    4005e2:       66 2e 0f 1f 84 00 00    nopw   %cs:0x0(%rax,%rax,1)
-    4005e9:       00 00 00 
-    4005ec:       0f 1f 40 00             nopl   0x0(%rax)
+    ...
 
 
-## Slide 7
+## Slide 6
 How do generics handle this?
 
 * Error checking - Static analysis is used to determine if the code should throw an error
@@ -86,6 +66,8 @@ Why is this important?
 * Reduces binary size
 * Errors can be understood by mere mortals
 
+## Slide 7
+TODO
 
 ## Parameterized Types and Type Variables - Dylan Start
 
