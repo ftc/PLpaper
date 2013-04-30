@@ -9,7 +9,7 @@
 
 ## Slide 2 - Sean Start
 
-Why didn't Java implement templates?
+Why didn't Java implement templates while implementing much of the rest of C++?
 
 ## Slide 3
 
