@@ -34,9 +34,6 @@ A simple example
     }
 
 ## Slide 5
-Q: How does C distinguish between getMax(int a, int b) and getMax(float a, float b)?
-A: Complicated gibberish!
-
 getMax(int a, int b)
 
     0000000000400597 <_Z6getMaxIiET_S0_S0_>:
