@@ -37,7 +37,7 @@ A simple example
 Q: How does C distinguish between getMax(int a, int b) and getMax(float a, float b)?
 A: Complicated gibberish!
 
-* getMax(int a, int b)
+getMax(int a, int b)
 
     0000000000400597 <_Z6getMaxIiET_S0_S0_>:
     400597:       55                      push   %rbp
@@ -53,7 +53,7 @@ A: Complicated gibberish!
     4005b1:       5d                      pop    %rbp
     4005b2:       c3                      retq 
 
-* getMax(float a, float b)
+getMax(float a, float b)
 
     00000000004005b3 <_Z6getMaxIdET_S0_S0_>:
     4005b3:       55                      push   %rbp
