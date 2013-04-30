@@ -15,8 +15,9 @@ Why didn't Java implement templates while implementing much of the rest of C++?
 
 Under the hood of templates
 
-* When you call a generic in C++ the compiler translates it into a function for that specific usage
+* When you call a template function in C++ the compiler translates it into a function for that specific usage
 * Can create massive numbers of functions for a relatively small amount of code
+* Can cause hard to read errors
 
 ## Slide 4
 A simple example
@@ -50,6 +51,7 @@ getMax(int a, int b)
     4005b1:       5d                      pop    %rbp
     4005b2:       c3                      retq 
 
+## Slide 6
 getMax(float a, float b)
 
     00000000004005b3 <_Z6getMaxIdET_S0_S0_>:
@@ -71,13 +73,6 @@ getMax(float a, float b)
     4005e9:       00 00 00 
     4005ec:       0f 1f 40 00             nopl   0x0(%rax)
 
-## Slide 6
-Why is this bad?
-
-* Causes extremely bizarre errors when it goes wrong
-* Causes extra unneeded complexity
-* The process of consuming these templates is turing complete
-
 
 ## Slide 7
 How do generics handle this?
@@ -88,6 +83,7 @@ How do generics handle this?
 Why is this important?
 
 * Speeds up compile time
+* Reduces binary size
 * Errors can be understood by mere mortals
 
 
