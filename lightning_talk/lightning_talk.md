@@ -176,8 +176,8 @@ This is an example of an error found at compile time due to Generics.
 ## Slide 19
 
 Evaluating Java Generics
-Con: at execution time you might not know what type an object is meant to be.
-Pro: Allows distinction of Covariance/Contravariance
+Pros: Enhanced type safety, less code duplication, less clutter from casting, compile time errors more often
+Cons: Cannot instantiate generic types, cannot assign list of sub type to pointer to array of super type
 
 ## Conclusion
 
