@@ -158,13 +158,6 @@ This is an example of an error found at compile time due to Generics.
 
 ## Slide 17
 
-	List<Fruit> bowl = new ArrayList<Fruit>();
-	for(Fruit fruit:bowl) {
-  	eat(fruit);
-	}
-
-## Slide 18
-
 	List bowl = new ArrayList();
 	for (int i = 0; i < bowl.size(); i++) {
  	 if (!(bowl.get(i) instanceOf Fruit)) {
@@ -173,6 +166,14 @@ This is an example of an error found at compile time due to Generics.
 	    Fruit fruit = (Fruit) bowl.get(i);
 	    eat(fruit);
 	  }
+	}
+
+
+## Slide 18
+
+	List<Fruit> bowl = new ArrayList<Fruit>();
+	for(Fruit fruit:bowl) {
+  	eat(fruit);
 	}
 
 ## Generic Pros and Cons
