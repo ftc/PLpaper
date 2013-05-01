@@ -38,16 +38,19 @@ A simple example
 getMax(int a, int b)
 
     0000000000400597 <_Z6getMaxIiET_S0_S0_>:
-    400597:   55               push   %rbp
-    400598:   48 89 e5         mov    %rsp,%rbp
-    40059b:   89 7d fc         mov    %edi,-0x4(%rbp)
+    400597:       55                      push   %rbp
+    400598:       48 89 e5                mov    %rsp,%rbp
+    40059b:       89 7d fc                mov    %edi,-0x4(%rbp)
+    40059e:       89 75 f8                mov    %esi,-0x8(%rbp)
     ...
+
 getMax(float a, float b)
 
     00000000004005b3 <_Z6getMaxIdET_S0_S0_>:
-    4005b3:   55               push   %rbp
-    4005b4:   48 89 e5         mov    %rsp,%rbp
-    4005b7:   f2 0f 11 45 f8   movsd  %xmm0,-0x8(%rbp)
+    4005b3:       55                      push   %rbp
+    4005b4:       48 89 e5                mov    %rsp,%rbp
+    4005b7:       f2 0f 11 45 f8          movsd  %xmm0,-0x8(%rbp)
+    4005bc:       f2 0f 11 4d f0          movsd  %xmm1,-0x10(%rbp)
     ...
 
 
@@ -72,7 +75,7 @@ Errors at the wrong time.
     };
     template <class T>
     int callFoo(T a){
-      return a.foo();
+      return a.foo
     }
     
 ## Slide 8
@@ -84,12 +87,11 @@ Errors at the correct time.
       }
     }
     public class BarPriv extends Bar{
-      private Integer foo() {  
+      private Integer foo() {  //Error: "Cannot reduce the visibility of the inherited method from Bar"
         return 20;
       }
     }
     
-Error: "Cannot reduce the visibility of the inherited method from Bar"
 
 ## Covariance and Contravariance - Dylan Start
 
@@ -156,7 +158,7 @@ This is an example of an error found at compile time due to Generics.
 
 ## Slide 17
 
-	List<Fruit> bowl = new ArrayList<Ftruit>();
+	List<Fruit> bowl = new ArrayList<Fruit>();
 	for(Fruit fruit:bowl) {
   	eat(fruit);
 	}
@@ -165,7 +167,7 @@ This is an example of an error found at compile time due to Generics.
 
 	List bowl = new ArrayList();
 	for (int i = 0; i < bowl.size(); i++) {
- 	 if (!(bowl.get(i) instanceof Fruit)) {
+ 	 if (!(bowl.get(i) instanceOf Fruit)) {
 	    continue;
 	  } else {
 	    Fruit fruit = (Fruit) bowl.get(i);
@@ -176,9 +178,13 @@ This is an example of an error found at compile time due to Generics.
 ## Slide 19
 
 Evaluating Java Generics
+
 Con: at execution time you might not know what type an object is meant to be.
+
 Pro: Allows distinction of Covariance/Contravariance
 
 ## Conclusion
+
+
 
 
