@@ -93,83 +93,44 @@ Errors at the correct time.
     }
     
 
-## Parameterized Types and Type Variables - Dylan Start
+## Covariance and Contravariance - Dylan Start
 
-The main feature of JSR 14 is the addition of two new types, parameterized types and type variables. 
+**Covariance** - Type conversion from specialized to general type
 
-* Parameterized Types - Class followed by parameter section <T<sub>1</sub>, … , T<sub>n</sub>> 
-* Type Variables - Act as placeholders for types passed by programmer
+**Contravariance** - Type conversion from general to specialized type
 
-## Generic Class Example 
+**Invariance** - Type conversion not possible
 
-	public class Example<K, V> {
+## Example Class Hierarchy 
+
+![Type Hierarchy][1]
+
+[1]: type-hierarchy.png
+
+## Invariance Between Generics
+
+Generic types are invariant to one another, so the following Java code will not compile.
+
+	List<Apple> apples;
+	List<Fruit> fruits = … ;
+	apples = fruits;
+
 	
-		private K key;		// declare variable key of type K
-		private V value; 	// declare variable value of type V
-	
-		public Example(K key, V value) {	// constructor
-			this.key = key;
-			this.value = value;
-		}
-	}
-
-## Partial Grammar Tree
-
-	ReferenceType      		::= ClassOrInterfaceType
-                     		| ArrayType
-                     		| TypeVariable
-
-	TypeVariable			::= Identifier
-
-	ClassOrInterfaceType	::= ClassOrInterface TypeArgumentsOpt
-
-	ClassOrInterface 		::= Identifier
-							| ClassOrInterfaceType . Identifier
-						
-	TypeArguments			::= < ReferenceTypeList>
-
-	ReferenceTypeList		::= ReferenceType
-							| ReferenceTypeList , ReferenceType
-
 ## Bounded Type Parameters
 
-Used to limit the possible types passed as type arguments. This is useful if, say, you write a function that only makes sense when operating on numbers. 
+Despite this invariance between generic types, you can introduce covariant and contravariant relationships using generic wildcards. 
 
-To declare a bounded type parameter you list the parameter's name followed by the *extends* keyword, followed by the upper bound.
+This also touches on bounded type parameters, which limit the possible type arguments that can be passed to a type parameter. 
 
-## Bounded Type Example
+## Covariance with Extends
 
-This example defines a method inspect() that prints the type of class variable t and function parameter u. The parameter u only accepts Numbers or subtypes of Number. Calling it on a String type throws an error.
-
-	public class Box<T> {
-
-	    private T t;          
+	List<Apple> apples = new ArrayList<Apple>();
+	List<? extends Fruit> fruits = apples;
 	
-	    public void set(T t) {
-	    	this.t = t;
-	    }
-	    
-	    public T get() {
-	    	return t;
-	    }
-	    	
-	    public <U extends Number> void inspect(U u){
-	        System.out.println("T: " + t.getClass().getName());
-	        System.out.println("U: " + u.getClass().getName());
-	    }
-	
-	    public static void main(String[] args) {
-	        Box<Integer> integerBox = new Box<Integer>();
-	        integerBox.set(new Integer(10));
-	        integerBox.inspect("some text"); // error: this is still String!
-	    }
-	}
+## Contravariance with Super
 
-Code snippet borrowed from [tutorialspoint.com][1]. 
-
-[1]: http://www.tutorialspoint.com/java/java_generics.htm
-	
-## Covariance and Contravariance
+	List<Fruit> fruits = new ArrayList<Fruit>();
+	List<? super Apple> = fruits;
 
 ## Slide 14 - Ryan Start
 
