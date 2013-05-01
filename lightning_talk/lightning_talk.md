@@ -67,7 +67,31 @@ Why is this important?
 * Errors can be understood by mere mortals
 
 ## Slide 7
-TODO
+Errors at the wrong time.
+
+    struct Foo{
+      private:
+        int foo(){return 7;}
+    };
+    template <class T>
+    int callFoo(T a){
+      return a.foo
+    }
+    
+## Slide 8
+Errors at the correct time.
+
+    public class Bar {
+      public Integer foo(){
+        return 10;
+      }
+    }
+    public class BarPriv extends Bar{
+      private Integer foo() {  //Error: "Cannot reduce the visibility of the inherited method from Bar"
+        return 20;
+      }
+    }
+    
 
 ## Parameterized Types and Type Variables - Dylan Start
 
