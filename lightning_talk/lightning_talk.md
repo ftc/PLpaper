@@ -87,11 +87,12 @@ Errors at the correct time.
       }
     }
     public class BarPriv extends Bar{
-      private Integer foo() {  //Error: "Cannot reduce the visibility of the inherited method from Bar"
+      private Integer foo() {  
         return 20;
       }
     }
     
+Error: "Cannot reduce the visibility of the inherited method from Bar"
 
 ## Covariance and Contravariance - Dylan Start
 
