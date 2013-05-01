@@ -149,14 +149,53 @@ Code snippet borrowed from [tutorialspoint.com][1].
 
 ## Slide 14 - Ryan Start
 
+	Vector v = new Vector();
+	v.add(new Apple());
+	v.add(new Strawberry());
+	Apple i = (Apple) v.get(0);
+	Strawberry bar = (Strawberry) v.get(1);
+
 ## Slide 15
+
+	List<Fruit> list = new ArrayList<Fruit>();
+	list.add(new Apple());
+	list.add(new Strawberry());
+
+	Apple i = list.get(0);
+	Strawberry bar = list.get(1);
 
 ## Slide 16
 
+	List<Fruit> list = new ArrayList<Fruit>();
+	list.add(new Integer(12));
+	
+This is an example of an error found at compile time due to Generics.
+
 ## Slide 17
+
+	List<Fruit> bowl = new ArrayList<Ftruit>();
+	for(Fruit fruit:bowl) {
+  	eat(fruit);
+	}
 
 ## Slide 18
 
+	List bowl = new ArrayList();
+	for (int i = 0; i < bowl.size(); i++) {
+ 	 if (!(bowl.get(i) instanceof Fruit)) {
+	    continue;
+	  } else {
+	    Fruit fruit = (Fruit) bowl.get(i);
+	    eat(fruit);
+	  }
+	}
+
 ## Slide 19
 
+Evaluating Java Generics
+Con: at execution time you might not know what type an object is meant to be.
+Pro: Allows distinction of Covariance/Contravariance
+
 ## Conclusion
+
+
