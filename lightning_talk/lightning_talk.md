@@ -38,19 +38,19 @@ A simple example
 getMax(int a, int b)
 
     0000000000400597 <_Z6getMaxIiET_S0_S0_>:
-    400597:       55                      push   %rbp
-    400598:       48 89 e5                mov    %rsp,%rbp
-    40059b:       89 7d fc                mov    %edi,-0x4(%rbp)
-    40059e:       89 75 f8                mov    %esi,-0x8(%rbp)
+    400597:   55               push   %rbp
+    400598:   48 89 e5         mov    %rsp,%rbp
+    40059b:   89 7d fc         mov    %edi,-0x4(%rbp)
+    40059e:   89 75 f8         mov    %esi,-0x8(%rbp)
     ...
 
 getMax(float a, float b)
 
     00000000004005b3 <_Z6getMaxIdET_S0_S0_>:
-    4005b3:       55                      push   %rbp
-    4005b4:       48 89 e5                mov    %rsp,%rbp
-    4005b7:       f2 0f 11 45 f8          movsd  %xmm0,-0x8(%rbp)
-    4005bc:       f2 0f 11 4d f0          movsd  %xmm1,-0x10(%rbp)
+    4005b3:   55               push   %rbp
+    4005b4:   48 89 e5         mov    %rsp,%rbp
+    4005b7:   f2 0f 11 45 f8   movsd  %xmm0,-0x8(%rbp)
+    4005bc:   f2 0f 11 4d f0   movsd  %xmm1,-0x10(%rbp)
     ...
 
 
