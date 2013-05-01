@@ -75,7 +75,7 @@ Errors at the wrong time.
     };
     template <class T>
     int callFoo(T a){
-      return a.foo
+      return a.foo();
     }
     
 ## Slide 8
