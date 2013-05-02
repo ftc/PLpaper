@@ -1,10 +1,10 @@
-# JSR 14 - Adding Generics to Java
+# JSR 14 - Adding Generics to Java presented by Dylan White, Sean Meier, and Ryan Roden
 
 ## Introduction
 * Java was introduced in 1995 with the intent of being able to write code once and run it anywhere
 * It derived much of its original syntax from the C++ programming language
 * Templates were left out
-* Generics were introduced to cover much of what was left out with templates
+* Generics were proposed in JSR 14 to cover much of what was left out with templates
 
 ## Why Not Use Templates?
 Why didn't Java implement templates while implementing much of the rest of C++?
@@ -15,8 +15,6 @@ Why didn't Java implement templates while implementing much of the rest of C++?
 * Can cause hard to read errors
 
 ## Template Example
-A simple example
-
     #include <stdio.h>
     using namespace std;
 
@@ -33,21 +31,20 @@ A simple example
 getMax(int a, int b)
 
     0000000000400597 <_Z6getMaxIiET_S0_S0_>:
-    400597:       55                      push   %rbp
-    400598:       48 89 e5                mov    %rsp,%rbp
-    40059b:       89 7d fc                mov    %edi,-0x4(%rbp)
-    40059e:       89 75 f8                mov    %esi,-0x8(%rbp)
+    400597:       55                 push   %rbp
+    400598:       48 89 e5           mov    %rsp,%rbp
+    40059b:       89 7d fc           mov    %edi,-0x4(%rbp)
+    40059e:       89 75 f8           mov    %esi,-0x8(%rbp)
     ...
 
 getMax(float a, float b)
 
     00000000004005b3 <_Z6getMaxIdET_S0_S0_>:
-    4005b3:       55                      push   %rbp
-    4005b4:       48 89 e5                mov    %rsp,%rbp
-    4005b7:       f2 0f 11 45 f8          movsd  %xmm0,-0x8(%rbp)
-    4005bc:       f2 0f 11 4d f0          movsd  %xmm1,-0x10(%rbp)
+    4005b3:       55                 push   %rbp
+    4005b4:       48 89 e5           mov    %rsp,%rbp
+    4005b7:       f2 0f 11 45 f8     movsd  %xmm0,-0x8(%rbp)
+    4005bc:       f2 0f 11 4d f0     movsd  %xmm1,-0x10(%rbp)
     ...
-
 
 ## Moving to Generics
 How do generics handle this?
@@ -83,32 +80,29 @@ Why is this important?
       }
     }
     
-
-## Covariance and Contravariance
-
-**Covariance** - Type conversion from specialized to general type
-
-**Contravariance** - Type conversion from general to specialized type
-
-**Invariance** - Type conversion not possible
-
 ## Fruit Class Hierarchy
 ![Type Hierarchy][1]
 
-[1]: type-hierarchy.png
+## Covariance and Contravariance
+
+**Covariance** - Specialized to general (Apple -> Fruit)
+
+**Contravariance** - General to specialized (Fruit -> Apple)
+
+**Invariance** - Type conversion not possible (Apple -> Strawberry)
 
 ## Invariance Between Generics
 Generic types are invariant to one another, so the following Java code will not compile.
 
 	List<Apple> apples;
 	List<Fruit> fruits = … ;
-	apples = fruits;
+	apples = fruits;	// error here
 
 	
 ## Bounded Type Parameters
-Despite this invariance between generic types, you can introduce covariant and contravariant relationships using generic wildcards. 
+Despite this invariance between generic types, you can still introduce covariant and contravariant relationships with Java generics. 
 
-This also touches on bounded type parameters, which limit the possible type arguments that can be passed to a type parameter. 
+This is accomplished with generic wildcards and **bounded type parameters**, which restrict the possible type arguments that can be passed to a type parameter.
 
 ## Covariance with *Extends*
 	List<Apple> apples = new ArrayList<Apple>();
@@ -168,7 +162,8 @@ This is an example of an error found at compile time due to generics.
 * Cannot assign list of sub type to pointer to array of super type
 
 ## Conclusion
+![Java Meme][2]
 
-
-
+[1]: images/real_tree.png
+[2]: images/java_meme.jpg
 
