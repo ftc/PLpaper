@@ -133,13 +133,13 @@ This also touches on bounded type parameters, which limit the possible type argu
 	Apple i = list.get(0);
 	Strawberry bar = list.get(1);
 
-## Slide 16
+## Debugging
 	List<Fruit> list = new ArrayList<Fruit>();
 	list.add(new Integer(12));
 	
 This is an example of an error found at compile time due to generics.
 
-## Slide 17
+## Before Generics (Verbose)
 	List bowl = new ArrayList();
 	for (int i = 0; i < bowl.size(); i++) {
  	 if (!(bowl.get(i) instanceOf Fruit)) {
@@ -150,7 +150,7 @@ This is an example of an error found at compile time due to generics.
 	  }
 	}
 
-## Slide 18
+## After Generics (Efficient)
 	List<Fruit> bowl = new ArrayList<Fruit>();
 	for(Fruit fruit:bowl) {
   	eat(fruit);
