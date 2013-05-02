@@ -1,25 +1,20 @@
-# Lightning Talk
+# JSR 14 - Adding Generics to Java
 
 ## Introduction
-
 * Java was introduced in 1995 with the intent of being able to write code once and run it anywhere
 * It derived much of its original syntax from the C++ programming language
 * Templates were left out
 * Generics were introduced to cover much of what was left out with templates
 
-## Slide 2 - Sean Start
-
+## Why Not Use Templates?
 Why didn't Java implement templates while implementing much of the rest of C++?
 
-## Slide 3
-
-Under the hood of templates
-
+## Templates Under the Hood
 * When you call a template function in C++ the compiler translates it into a function for that specific usage
 * Can create massive numbers of functions for a relatively small amount of code
 * Can cause hard to read errors
 
-## Slide 4
+## Template Example
 A simple example
 
     #include <stdio.h>
@@ -34,7 +29,7 @@ A simple example
       printf("max of 2.3,7.8 is %e\n", getMax(2.3,7.8));
     }
 
-## Slide 5
+## Template Example (Cont.)
 getMax(int a, int b)
 
     0000000000400597 <_Z6getMaxIiET_S0_S0_>:
@@ -54,7 +49,7 @@ getMax(float a, float b)
     ...
 
 
-## Slide 6
+## Moving to Generics
 How do generics handle this?
 
 * Error checking - Static analysis is used to determine if the code should throw an error
@@ -66,9 +61,7 @@ Why is this important?
 * Reduces binary size
 * Errors can be understood by mere mortals
 
-## Slide 7
-Errors at the wrong time.
-
+## Errors at the Wrong Time
     struct Foo{
       private:
         int foo(){return 7;}
@@ -78,9 +71,7 @@ Errors at the wrong time.
       return a.foo
     }
     
-## Slide 8
-Errors at the correct time.
-
+## Errors at the Correct Time
     public class Bar {
       public Integer foo(){
         return 10;
@@ -93,7 +84,7 @@ Errors at the correct time.
     }
     
 
-## Covariance and Contravariance - Dylan Start
+## Covariance and Contravariance
 
 **Covariance** - Type conversion from specialized to general type
 
@@ -101,14 +92,12 @@ Errors at the correct time.
 
 **Invariance** - Type conversion not possible
 
-## Example Class Hierarchy 
-
+## Fruit Class Hierarchy
 ![Type Hierarchy][1]
 
 [1]: type-hierarchy.png
 
 ## Invariance Between Generics
-
 Generic types are invariant to one another, so the following Java code will not compile.
 
 	List<Apple> apples;
@@ -117,31 +106,26 @@ Generic types are invariant to one another, so the following Java code will not 
 
 	
 ## Bounded Type Parameters
-
 Despite this invariance between generic types, you can introduce covariant and contravariant relationships using generic wildcards. 
 
 This also touches on bounded type parameters, which limit the possible type arguments that can be passed to a type parameter. 
 
-## Covariance with Extends
-
+## Covariance with *Extends*
 	List<Apple> apples = new ArrayList<Apple>();
 	List<? extends Fruit> fruits = apples;
 	
-## Contravariance with Super
-
+## Contravariance with *Super*
 	List<Fruit> fruits = new ArrayList<Fruit>();
 	List<? super Apple> = fruits;
 
-## Slide 14 - Ryan Start
-
+## Before Generics
 	Vector v = new Vector();
 	v.add(new Apple());
 	v.add(new Strawberry());
 	Apple i = (Apple) v.get(0);
 	Strawberry bar = (Strawberry) v.get(1);
 
-## Slide 15
-
+## After Generics
 	List<Fruit> list = new ArrayList<Fruit>();
 	list.add(new Apple());
 	list.add(new Strawberry());
@@ -150,21 +134,18 @@ This also touches on bounded type parameters, which limit the possible type argu
 	Strawberry bar = list.get(1);
 
 ## Slide 16
-
 	List<Fruit> list = new ArrayList<Fruit>();
 	list.add(new Integer(12));
 	
-This is an example of an error found at compile time due to Generics.
+This is an example of an error found at compile time due to generics.
 
 ## Slide 17
-
 	List<Fruit> bowl = new ArrayList<Fruit>();
 	for(Fruit fruit:bowl) {
-  	eat(fruit);
+  		eat(fruit);
 	}
 
 ## Slide 18
-
 	List bowl = new ArrayList();
 	for (int i = 0; i < bowl.size(); i++) {
  	 if (!(bowl.get(i) instanceOf Fruit)) {
@@ -175,8 +156,7 @@ This is an example of an error found at compile time due to Generics.
 	  }
 	}
 
-## Generic Pros and Cons
-
+## Pros and Cons
 ### Pros 
  * Enhanced type safety
  * Less code duplication, 
